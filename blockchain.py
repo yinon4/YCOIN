@@ -32,6 +32,11 @@ class Block:
         while(self.hash.startswith("0" * difficulty) == False):
             self.nonce +=1
             self.hash = self.calcHash()
+    def __str__(self):
+        self.print = ""
+        for i in self.transactions:
+            self.print += str(i) + "\n"
+        return self.print
 
 
 
@@ -52,7 +57,7 @@ class Blockchain:
         newBlock = Block(self.pending_transactions, self.getLatestBlock().hash)
         newBlock.mineBlock(self.difficulty)
         self.chain.append(newBlock)
-        self.pending_transactions = [Transaction("0", mining_reward_address, self.mining_reward)]
+        self.pending_transactions = [Transaction(None, mining_reward_address, self.mining_reward)]
 
     def addTransaction(self, transaction):
         self.pending_transactions.append(transaction)
@@ -76,3 +81,9 @@ class Blockchain:
             if(current_block.hash != current_block.calcHash()):
                 return False
         return True
+
+    def __str__(self):
+        self.print = ""
+        for i in self.chain:
+            self.print += str(i) + "\n"
+        return self.print
