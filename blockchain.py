@@ -16,12 +16,13 @@ class Block:
         self.transactions = transactions
         self.previous_hash = previous_hash
         self.nonce = 0;
+        self.time = time.time()
         self.hash = self.calcHash()
 
 
 
     def calcHash(self):
-        header = str(self.nonce) + str(self.transactions) + str(self.previous_hash)
+        header = str(self.time) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
         return sha256(header.encode("ascii")).hexdigest()
 
     def mineBlock(self, difficulty):
