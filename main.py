@@ -3,6 +3,7 @@ from hashlib import sha256
 
 def set_balance(address, amount):
     YCoin.addTransaction(blockchain.Transaction(None, address, amount))
+    YCoin.minePendingTransactions(None)
 
 if __name__ == '__main__':
     YCoin = blockchain.Blockchain()
@@ -18,5 +19,5 @@ if __name__ == '__main__':
     print(YCoin.getBalanceOfAddress("3"))
 
 
-    #YCoin.chain[1].transactions = [Transaction("Dvir", "Yinon", 1000000)]
-    #print("Valid") if YCoin.isChainValid() else print("Unvalid")
+    # YCoin.chain[1].transactions = [blockchain.Transaction("Dvir", "Yinon", 1000000)]
+    print("Valid") if YCoin.isChainValid() else print("Unvalid")
