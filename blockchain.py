@@ -1,5 +1,5 @@
 from hashlib import sha256
-import time
+from datetime import date
 
 
 
@@ -9,39 +9,44 @@ class Transaction:
         self.to_address = to_address
         self.amount = amount
 
+    def __str__(self):
+        return (f"{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}")
 
 
 class Block:
     def __init__(self, transactions, previous_hash):
         self.transactions = transactions
         self.previous_hash = previous_hash
+        print(self.previous_hash)
         self.nonce = 0;
-        self.time = time.time()
+        self.date = date.today()
+        print(self.date)
         self.hash = self.calcHash()
 
 
 
     def calcHash(self):
-        header = str(self.time) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
+        header = str(self.date) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
+
         return sha256(header.encode("ascii")).hexdigest()
 
     def mineBlock(self, difficulty):
         while(self.hash.startswith("0" * difficulty) == False):
             self.nonce +=1
             self.hash = self.calcHash()
-
+        print(self.hash)
 
 
 
 class Blockchain:
     def __init__(self):
         self.chain = [self.createGenBlock()]
-        self.difficulty = 2
+        self.difficulty = 3
         self.pending_transactions = []
         self.mining_reward = 100
 
     def createGenBlock(self):
-        return Block([Transaction(None, "0", 0)], 0)
+        return Block([Transaction(None, None, 0)], 0)
 
     def getLatestBlock(self):
         return self.chain[-1]
