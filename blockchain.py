@@ -10,7 +10,7 @@ class Transaction:
         self.amount = amount
 
     def __str__(self):
-        return (f"{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}")
+        return f"{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}"
 
 
 class Block:
@@ -25,13 +25,13 @@ class Block:
 
     def calcHash(self):
         header = str(self.date) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
-
         return sha256(header.encode("ascii")).hexdigest()
 
     def mineBlock(self, difficulty):
         while(self.hash.startswith("0" * difficulty) == False):
             self.nonce +=1
             self.hash = self.calcHash()
+
     def __str__(self):
         self.print = ""
         for i in self.transactions:
