@@ -19,9 +19,7 @@ class Block:
         self.previous_hash = previous_hash
         print(self.previous_hash)
         self.nonce = 0;
-        self.date = date.today()
         print(self.date)
-        self.hash = self.calcHash()
 
 
 
@@ -34,7 +32,6 @@ class Block:
         while(self.hash.startswith("0" * difficulty) == False):
             self.nonce +=1
             self.hash = self.calcHash()
-        print(self.hash)
 
 
 
