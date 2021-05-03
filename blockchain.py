@@ -17,9 +17,9 @@ class Block:
     def __init__(self, transactions, previous_hash):
         self.transactions = transactions
         self.previous_hash = previous_hash
-        print(self.previous_hash)
         self.nonce = 0;
-        print(self.date)
+        self.date = date.today()
+        self.hash = self.calcHash()
 
 
 
