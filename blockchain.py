@@ -10,7 +10,7 @@ class Transaction:
         self.amount = amount
 
     def __str__(self):
-        return f"{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}"
+        return f"\t{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}"
 
 
 class Block:
@@ -43,7 +43,7 @@ class Block:
 class Blockchain:
     def __init__(self):
         self.chain = [self.createGenBlock()]
-        self.difficulty = 3
+        self.difficulty = 2
         self.pending_transactions = []
         self.mining_reward = 100
 
