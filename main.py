@@ -13,10 +13,11 @@ if __name__ == '__main__':
 
     YCoin.minePendingTransactions("2")
     YCoin.minePendingTransactions(None)
-    
-    print(YCoin.getBalanceOfAddress("1"))
-    print(YCoin.getBalanceOfAddress("2"))
-    print(YCoin.getBalanceOfAddress("3"))
+
+    print("Balance of address: " + str(YCoin.getBalanceOfAddress("1")))
+    print("Balance of address: " + str(YCoin.getBalanceOfAddress("2")))
+    print("Balance of address: " + str(YCoin.getBalanceOfAddress("3")))
 
 
-    print("Valid") if YCoin.isChainValid() else print("Unvalid")
+    print("Chain Valid") if YCoin.isChainValid() else print("Chain Unvalid")
+    print("\nChain History:\n" + str(YCoin))
