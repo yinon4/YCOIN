@@ -28,6 +28,7 @@ if __name__ == '__main__':
     printAddressBalance('A1')
     printAddressBalance('A2')
     printAddressBalance('A3')
+    print("Worked!")
 
     printChainValidity(YCoin)
     printChainHistory(YCoin)
