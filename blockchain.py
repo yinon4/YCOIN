@@ -1,10 +1,10 @@
 from hashlib import sha256
 from datetime import date
 
-def hash(str):
-    if str is None:
+def hash(string):
+    if string == None:
         return None
-    return sha256(str.encode("ascii")).hexdigest()
+    return sha256(string.encode("ascii")).hexdigest()
 
 
 class Transaction:
@@ -23,14 +23,14 @@ class Block:
         self.previous_hash = previous_hash
         self.nonce = 0;
         self.date = date.today()
-        self.hash = self.calcHash()
+        self.hash = ""
 
     def calcHash(self):
         header = str(self.date) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
         return hash(header)
 
     def mineBlock(self, difficulty):
-        while(self.hash.startswith("0" * difficulty) == False):
+        while not self.hash.startswith("0" * difficulty):
             self.nonce +=1
             self.hash = self.calcHash()
 
@@ -52,28 +52,31 @@ class Blockchain:
     def createGenBlock(self):
         return Block([Transaction(None, None, 0)], 0)
 
-    def getLatestBlock(self):
+    def latestBlock(self):
         return self.chain[-1]
 
     def minePendingTransactions(self, mining_reward_address):
-        newBlock = Block(self.pending_transactions, self.getLatestBlock().hash)
+        newBlock = Block(self.pending_transactions, self.latestBlock().hash)
         newBlock.mineBlock(self.difficulty)
         self.chain.append(newBlock)
         self.pending_transactions = [Transaction(None, mining_reward_address, self.mining_reward)]
 
-    def addTransaction(self, transaction):
-        self.pending_transactions.append(transaction)
-
-    def getBalanceOfAddress(self, address):
-        address = hash(address)
+    def balanceOfAddress(self, address):
         balance = 0
-        for block in self.chain:
+        #add pending block to balance
+        pending_chain = self.chain + [Block(self.pending_transactions, self.latestBlock().hash)]
+        for block in pending_chain:
             for trans in block.transactions:
                 if(trans.from_address == address):
                     balance -= trans.amount
                 if(trans.to_address == address):
                     balance += trans.amount
         return balance
+
+    def addTransaction(self, transaction):
+        if ((transaction.from_address != None) and (self.balanceOfAddress(transaction.from_address) < transaction.amount)):
+            print(str(transaction) + "\nNot enough funds on address")
+        else:   self.pending_transactions.append(transaction)
 
     def isChainValid(self):
         for i in range(1, len(self.chain)):
