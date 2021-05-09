@@ -5,7 +5,7 @@ def printChainHistory(chain):
     print("\nChain History:\n" + str(chain))
 
 def printChainValidity(chain):
-    print("Chain Valid!") if chain.isChainValid() else print(f"Chain Unvalid!")
+    print("Chain Valid!") if chain.isChainValid() else print("Chain Unvalid!")
 
 def mineBlock(address = None):
     YCoin.minePendingTransactions(address)
@@ -22,12 +22,10 @@ if __name__ == '__main__':
     set_balance('A1', 100)
     YCoin.addTransaction(blockchain.Transaction('A1', 'A2', 50))
     YCoin.addTransaction(blockchain.Transaction('A2', 'A3', 50))
-
     mineBlock('A2')
     mineBlock()
+
     printAddressBalance('A1')
     printAddressBalance('A2')
     printAddressBalance('A3')
-
     printChainValidity(YCoin)
-    printChainHistory(YCoin)
