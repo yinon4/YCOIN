@@ -10,10 +10,10 @@ def hash(string):
 def trans(from_address, to_address, amount):
     return YCoin.addTransaction(blockchain.Transaction(from_address, to_address, amount))
 
-def printChainHistory(chain = YCoin):
+def printChainHistory(chain):
     print("\nChain History:\n" + str(chain))
 
-def printChainValidity(chain = YCoin):
+def printChainValidity(chain):
     print("Chain Valid!") if chain.isChainValid() else print("Chain Unvalid!")
 
 def mineBlock(address = None):
@@ -36,4 +36,4 @@ if __name__ == '__main__':
     printAddressBalance('A1')
     printAddressBalance('A2')
     printAddressBalance('A3')
-    printChainValidity()
+    printChainValidity(YCoin)
