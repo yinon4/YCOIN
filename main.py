@@ -1,5 +1,5 @@
 import blockchain as bc
-YCoin = bc.Blockchain(difficulty = 3, mining_reward = 100)
+YCoin = bc.Blockchain(difficulty = 4, mining_reward = 100)
 
 def pay(from_address, to_address, amount, chain = YCoin):
     private_from_address = bc.hash(from_address)

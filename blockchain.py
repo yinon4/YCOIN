@@ -13,6 +13,9 @@ class Transaction:
     def __str__(self):
         return f"\t{str(self.private_from_address)} -> ${str(self.amount)} -> {str(self.public_to_address)}"
 
+    def __repr__(self):
+        return str(self)
+        
 class Block:
     def __init__(self, transactions, previous_hash):
         self.transactions = transactions
@@ -22,13 +25,16 @@ class Block:
         self.hash = ""
 
     def hash_recalc(self):
-        header = str(self.date) + str(self.nonce) + str(self.transactions) + str(self.previous_hash)
+        header = str(self.nonce) + str(self.transactions) + str(self.previous_hash)
         return hash(header)
 
     def mineBlock(self, difficulty):
         while not self.hash.startswith("0" * difficulty):
             self.nonce += 1
             self.hash = self.hash_recalc()
+            if self.nonce % 10000 == 0:
+                print(self.nonce, end = '\r')
+        print("nonce = " + str(self.nonce))
 
     def __str__(self):
         self.string = ""
@@ -51,7 +57,6 @@ class Blockchain:
 
     def minePendingTransactions(self, public_to_address):
         newBlock = Block(self.pending_transactions, self.latest_block().hash)
-        print("Mining...")
         newBlock.mineBlock(self.difficulty)
         self.chain.append(newBlock)
         self.pending_transactions = [Transaction(None, public_to_address, self.mining_reward)]
