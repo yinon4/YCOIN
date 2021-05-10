@@ -5,7 +5,7 @@ def hash(string):
     return bc.hash(string)
 
 def trans(from_address, to_address, amount):
-    return YCoin.addTransaction(bc.Transaction(hash(from_address), hash(to_address), amount))
+    return YCoin.addTransaction(bc.Transaction(hash(from_address), hash(hash(to_address)), amount))
 
 def printChainHistory():
     print("\nChain History:\n" + str(YCoin))
@@ -14,7 +14,7 @@ def printChainValidity():
     print("Chain Valid!") if YCoin.isChainValid() else print("Chain Unvalid!")
 
 def mineBlock(address = None):
-    YCoin.minePendingTransactions(hash(address))
+    YCoin.minePendingTransactions(hash(hash(address)))
 
 def printAddressBalance(address):
     print(f"Balance {address} = ${YCoin.balanceOfAddress(hash(address))}")
@@ -38,7 +38,5 @@ if __name__ == '__main__':
 
 
 #   private is hash of name (FOR TESTING PURPOSES NOT CORE)
-#   from is private,    hashed once
-#   to is public,       hashed twice
-#   in main.py send hashed once
-#   in bc.py hash as necessary
+#   from is private,    name hashed once
+#   to is public,       name hashed twice

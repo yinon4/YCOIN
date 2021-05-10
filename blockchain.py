@@ -2,14 +2,12 @@ from hashlib import sha256
 from datetime import date
 
 def hash(string):
-    if string == None:
-        return None
-    return sha256(string.encode("ascii")).hexdigest()
+    return None if (string == None) else sha256(string.encode("ascii")).hexdigest()
 
 class Transaction:
     def __init__(self, from_address, to_address, amount):
         self.from_address = from_address
-        self.to_address = hash(to_address)
+        self.to_address = to_address
         self.amount = amount
 
     def __str__(self):
