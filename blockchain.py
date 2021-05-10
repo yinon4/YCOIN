@@ -1,13 +1,10 @@
 from hashlib import sha256
 from datetime import date
 
-def hash(string, times = 1):
-    for i in range(times):
-        if string == None:
-            string = None
-        else: string = sha256(string.encode("ascii")).hexdigest()
-    return string
-
+def hash(string):
+    if string == None:
+        return None
+    return sha256(string.encode("ascii")).hexdigest()
 
 class Transaction:
     def __init__(self, from_address, to_address, amount):
@@ -17,7 +14,6 @@ class Transaction:
 
     def __str__(self):
         return f"\t{str(self.from_address)} -> ${str(self.amount)} -> {str(self.to_address)}"
-
 
 class Block:
     def __init__(self, transactions, previous_hash):
@@ -42,12 +38,10 @@ class Block:
             self.string += str(i) + "\n"
         return self.string
 
-
-
 class Blockchain:
     def __init__(self):
         self.chain = [self.createGenBlock()]
-        self.difficulty = 2
+        self.difficulty = 3
         self.pending_transactions = []
         self.mining_reward = 100
 
@@ -61,7 +55,6 @@ class Blockchain:
         newBlock = Block(self.pending_transactions, self.latestBlock().hash)
         print("Mining...")
         newBlock.mineBlock(self.difficulty)
-        print("Done!")
         self.chain.append(newBlock)
         self.pending_transactions = [Transaction(None, mining_reward_address, self.mining_reward)]
 

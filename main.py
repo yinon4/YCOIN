@@ -1,20 +1,23 @@
-import blockchain
-YCoin = blockchain.Blockchain()
+import blockchain as bc
+YCoin = bc.Blockchain()
+
+def hash(string):
+    return bc.hash(string)
 
 def trans(from_address, to_address, amount):
-    return YCoin.addTransaction(blockchain.Transaction(blockchain.hash(from_address), blockchain.hash(to_address), amount))
+    return YCoin.addTransaction(bc.Transaction(hash(from_address), hash(to_address), amount))
 
 def printChainHistory():
     print("\nChain History:\n" + str(YCoin))
 
-def printChainValidity(chain):
-    print("Chain Valid!") if chain.isChainValid() else print("Chain Unvalid!")
+def printChainValidity():
+    print("Chain Valid!") if YCoin.isChainValid() else print("Chain Unvalid!")
 
 def mineBlock(address = None):
-    YCoin.minePendingTransactions(blockchain.hash(address))
+    YCoin.minePendingTransactions(hash(address))
 
 def printAddressBalance(address):
-    print(f"Balance {address} = ${YCoin.balanceOfAddress(blockchain.hash(address))}")
+    print(f"Balance {address} = ${YCoin.balanceOfAddress(hash(address))}")
 
 def set_balance(address, amount):
     trans(None, address, amount)
@@ -25,13 +28,13 @@ if __name__ == '__main__':
     trans('A1', 'A2', 50)
     trans('A2', 'A3', 50)
     mineBlock('A2')
+    mineBlock('A1')
     mineBlock()
 
     printAddressBalance('A1')
     printAddressBalance('A2')
     printAddressBalance('A3')
-    printChainValidity(YCoin)
-    printChainHistory()
+    printChainValidity()
 
 
 #   private is hash of name (FOR TESTING PURPOSES NOT CORE)
