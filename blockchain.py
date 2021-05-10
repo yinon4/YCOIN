@@ -37,11 +37,11 @@ class Block:
         return self.string
 
 class Blockchain:
-    def __init__(self):
+    def __init__(self, difficulty, mining_reward):
         self.chain = [self.createGenBlock()]
-        self.difficulty = 3
+        self.difficulty = difficulty
         self.pending_transactions = []
-        self.mining_reward = 100
+        self.mining_reward = mining_reward
 
     def createGenBlock(self):
         return Block([Transaction(None, None, 0)], 0)
@@ -49,22 +49,23 @@ class Blockchain:
     def latestBlock(self):
         return self.chain[-1]
 
-    def minePendingTransactions(self, mining_reward_address):
+    def minePendingTransactions(self, mining_reward_public_address):
         newBlock = Block(self.pending_transactions, self.latestBlock().hash)
         print("Mining...")
         newBlock.mineBlock(self.difficulty)
         self.chain.append(newBlock)
-        self.pending_transactions = [Transaction(None, mining_reward_address, self.mining_reward)]
+        self.pending_transactions = [Transaction(None, mining_reward_public_address, self.mining_reward)]
 
-    def balanceOfAddress(self, address):
+    def balanceOfAddress(self, private_address):
         balance = 0
+        public_address = hash(private_address)
         #add pending block to balance so to make sure no negative balance
         pending_chain = self.chain + [Block(self.pending_transactions, self.latestBlock().hash)]
         for block in pending_chain:
             for trans in block.transactions:
-                if(trans.from_address == address):
+                if(trans.from_address == private_address):
                     balance -= trans.amount
-                if(trans.to_address == hash(address)):
+                if(trans.to_address == public_address):
                     balance += trans.amount
         return balance
 
