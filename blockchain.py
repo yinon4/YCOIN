@@ -1,15 +1,17 @@
 from hashlib import sha256
 from datetime import date
 
-def hash(string):
-    if string == None:
-        return None
-    return sha256(string.encode("ascii")).hexdigest()
+def hash(string, times = 1):
+    for i in range(times):
+        if string == None:
+            string = None
+        else: string = sha256(string.encode("ascii")).hexdigest()
+    return string
 
 
 class Transaction:
     def __init__(self, from_address, to_address, amount):
-        self.from_address = hash(from_address)
+        self.from_address = from_address
         self.to_address = hash(to_address)
         self.amount = amount
 
@@ -30,9 +32,8 @@ class Block:
         return hash(header)
 
     def mineBlock(self, difficulty):
-        print("Mining...")
         while not self.hash.startswith("0" * difficulty):
-            self.nonce +=1
+            self.nonce += 1
             self.hash = self.calcHash()
 
     def __str__(self):
@@ -46,7 +47,7 @@ class Block:
 class Blockchain:
     def __init__(self):
         self.chain = [self.createGenBlock()]
-        self.difficulty = 5
+        self.difficulty = 2
         self.pending_transactions = []
         self.mining_reward = 100
 
@@ -58,8 +59,9 @@ class Blockchain:
 
     def minePendingTransactions(self, mining_reward_address):
         newBlock = Block(self.pending_transactions, self.latestBlock().hash)
+        print("Mining...")
         newBlock.mineBlock(self.difficulty)
-        print(str(newBlock))
+        print("Done!")
         self.chain.append(newBlock)
         self.pending_transactions = [Transaction(None, mining_reward_address, self.mining_reward)]
 
@@ -71,7 +73,7 @@ class Blockchain:
             for trans in block.transactions:
                 if(trans.from_address == address):
                     balance -= trans.amount
-                if(trans.to_address == address):
+                if(trans.to_address == hash(address)):
                     balance += trans.amount
         return balance
 
